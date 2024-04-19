@@ -5,7 +5,12 @@ chrome.runtime.onMessage.addListener(
                 if (Object.hasOwnProperty.call(request, name)) {
                     const value = request[name];
                     const node = document.getElementsByName(name)[0]
-                    node.value = value;
+                    if (node.type === 'checkbox') {
+                        node.checked = value === 'checked' ? true : false
+                    } else if (value !== '') {
+                        node.value = value
+                    }
+
                     node.classList.add('focused')
                     window.setTimeout(function() {
                         node.classList.remove('focused')

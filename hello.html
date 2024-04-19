@@ -35,7 +35,7 @@
         <form class="mt-3">
             <div class="form-group">
                 <label for="prompt">Prompt LLM:</label>
-                <input type="text" class="form-control" id="prompt" name="prompt" required>
+                <textarea rows="5" class="form-control" id="prompt" name="prompt" required placeholder="Type in your prompt message...">Hello, my name is Emily Rodriguez, and you can reach me at emily.rodriguez@email.com or (123) 456-7890. My mailing address is 123 Main Street, Anytown, USA. I identify as female, and I wholeheartedly accept the terms of service. Looking forward to engaging with you!</textarea>
                 <div class="invalid-feedback">
                     Please enter a prompt.
                 </div>
@@ -43,8 +43,8 @@
             <div class="form-group">
                 <label for="model">Select a model:</label>
                 <select class="form-control" name="model" id="model" required>
-                    <option value="" disabled selected>Select a model...</option>
-                    <option value="gpt">GPT-3.5</option>
+                    <option value="" disabled >Select a model...</option>
+                    <option value="gpt" selected>GPT-3.5</option>
                     <option value="gorilla">Gorilla</option>
                     <option value="llama3">Llama3</option>
                     <option value="mistral">Mistral</option>
@@ -58,7 +58,7 @@
             <input type="submit" class="btn btn-primary" value="Submit">
             <div class="form-check mt-2">
                 <input type="checkbox" class="form-check-input" id="toggleCheckbox" checked>
-                <label class="form-check-label" for="toggleCheckbox">Developer Mode</label>
+                <label class="form-check-label" for="toggleCheckbox">Debugger</label>
             </div>
             <div class="debug-panel" id="debug-panel">
                 <section>
