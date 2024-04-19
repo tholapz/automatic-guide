@@ -7,6 +7,9 @@ document.querySelector('form').onsubmit = async (event) => {
     // Prevent the form from submitting normally
     event.preventDefault();
 
+    event.target.disabled = true;
+    document.getElementById('response-json-container').innerHTML = ''
+
     const tabs = await chrome.tabs.query({ active: true, currentWindow: true });
     const formData = new FormData(event.target);
 
@@ -25,12 +28,13 @@ document.querySelector('form').onsubmit = async (event) => {
         console.log(response.status);
     })
     console.log('Form submitted');
+    event.target.disabled = false;
     return responsePayload;
 };
 
 async function postJSON(data) {
     try {
-        const response = await fetch('http://127.0.0.1:8000/items', {
+        const response = await fetch('http://127.0.0.1:8000/items/', {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
