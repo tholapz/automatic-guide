@@ -1,39 +1,39 @@
+document.getElementById('toggleCheckbox').addEventListener('change', function () {
+    const debugPanel = document.getElementById('debug-panel');
+    debugPanel.style.display = this.checked ? "block" : "none"
+});
+
 document.querySelector('form').onsubmit = async (event) => {
     // Prevent the form from submitting normally
     event.preventDefault();
 
-    const tabs = await chrome.tabs.query({active: true, currentWindow: true});
-
-    chrome.scripting.insertCSS({
-        files: ['highlight-fields.css'],
-        target: {tabId: tabs[0].id}
-    });
-
-    const url = tabs[0].url
+    const tabs = await chrome.tabs.query({ active: true, currentWindow: true });
     const formData = new FormData(event.target);
-    const prompt = formData.get("messageLLM")
 
-    const results = await postJSON({
-        prompt,
-        url,
-        mode:"wizardlm2"
-    })
+    const requestPayload = {
+        prompt: formData.get("prompt"),
+        url: tabs[0].url,
+        model: formData.get("model")
+    }
+    document.getElementById('request-json-container').innerHTML = JSON.stringify(requestPayload, null, 2);
 
-    document.getElementById('json-container').innerHTML = '<pre>' + JSON.stringify(results, null, 2) + '</pre>';
+    const responsePayload = await postJSON(requestPayload)
 
-    chrome.tabs.sendMessage(tabs[0].id, results, (response) => {
+    document.getElementById('response-json-container').innerHTML = JSON.stringify(responsePayload, null, 2);
+
+    chrome.tabs.sendMessage(tabs[0].id, responsePayload, (response) => {
         console.log(response.status);
     })
     console.log('Form submitted');
-    return results;
-   };
+    return responsePayload;
+};
 
 async function postJSON(data) {
     try {
         const response = await fetch('http://127.0.0.1:8000/items', {
             method: "POST",
             headers: {
-            "Content-Type": "application/json",
+                "Content-Type": "application/json",
             },
             body: JSON.stringify(data),
         });
