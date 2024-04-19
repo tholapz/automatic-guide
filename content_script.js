@@ -3,9 +3,9 @@ chrome.runtime.onMessage.addListener(
         try {
             for (const name in request) {
                 if (Object.hasOwnProperty.call(request, name)) {
-                    const value = request[key];
+                    const value = request[name];
                     const node = document.getElementsByName(name)[0]
-                    node.innerHTML = value;
+                    node.value = value;
                     node.classList.add('focused')
                     window.setTimeout(function() {
                         node.classList.remove('focused')
